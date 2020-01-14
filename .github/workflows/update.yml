@@ -1,0 +1,22 @@
+name: Update
+on:
+  repository_dispatch:
+    types: [update]
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: upstream
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Update
+      run: |
+        git remote add upstream "https://github.com/docopt/docopt.cpp.git"
+        git fetch upstream
+        git merge --ff-only upstream/master
+        git push
