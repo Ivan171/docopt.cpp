@@ -1,0 +1,24 @@
+From f6e4c4842ba3d12ee8d3627b12692b6abd7f1b81 Mon Sep 17 00:00:00 2001
+From: Ivan Garramona <heavenandhell171@gmail.com>
+Date: Mon, 4 Jan 2016 21:00:07 -0200
+Subject: [PATCH 3/9] [CMake] Remove superfluous include_directories call.
+
+---
+ CMakeLists.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f2e0935..9f6e37e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -5,7 +5,6 @@ option(DOCOPT_WITH_EXAMPLE "Build example." OFF)
+ option(DOCOPT_WITH_STATIC  "Build static libs." ON)
+ 
+ project(docopt.cpp)
+-include_directories("${PROJECT_SOURCE_DIR}")
+ 
+ ########################################################################
+ # Compiler properties
+-- 
+2.24.0
+

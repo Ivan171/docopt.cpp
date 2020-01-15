@@ -1,0 +1,63 @@
+From 2f87aa1d1ec5e582d7f146b757ecde4f0569c7e8 Mon Sep 17 00:00:00 2001
+From: Ivan Garramona <heavenandhell171@gmail.com>
+Date: Wed, 6 Jan 2016 15:49:51 -0200
+Subject: [PATCH 4/9] [CMake] Respect BUILD_SHARED_LIBS when creating the
+ library target.
+
+This removes the ability to create STATIC and SHARED libraries on the same
+build. It simplifies the use of the library, and remove code duplication between
+the targets.
+
+Clients built with BUILD_SHARED_LIBS=ON, can build a static docopt with the
+option DOCOPT_WITH_STATIC.
+---
+ CMakeLists.txt | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9f6e37e..b9d6112 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.1)
+ 
+ option(DOCOPT_WITH_TESTS   "Build tests." OFF)
+ option(DOCOPT_WITH_EXAMPLE "Build example." OFF)
+-option(DOCOPT_WITH_STATIC  "Build static libs." ON)
++option(DOCOPT_WITH_STATIC  "Build static libs. (overrides BUILD_SHARED_LIBS)" OFF)
++
++if(DOCOPT_WITH_STATIC)
++	set(BUILD_SHARED_LIBS OFF)
++endif()
+ 
+ project(docopt.cpp)
+ 
+@@ -33,11 +37,8 @@ set(DOCOPT_SRC
+ 		docopt_util.h
+ 		docopt_value.h
+ 		)
+-if(DOCOPT_WITH_STATIC)
+-	add_library(docopt_s STATIC ${DOCOPT_SRC})
+-	target_include_directories(docopt_s PUBLIC "${PROJECT_SOURCE_DIR}")
+-endif()
+-add_library(docopt SHARED ${DOCOPT_SRC})
++
++add_library(docopt ${DOCOPT_SRC})
+ target_include_directories(docopt PUBLIC "${PROJECT_SOURCE_DIR}")
+ 
+ ########################################################################
+@@ -70,11 +71,7 @@ endif()
+ INSTALL(TARGETS
+ 		docopt
+ 		DESTINATION lib)
+-if(DOCOPT_WITH_STATIC)
+-	INSTALL(TARGETS
+-			docopt_s
+-			DESTINATION lib)
+-endif()
++
+ INSTALL(FILES
+ 		docopt.h
+ 		docopt_private.h
+-- 
+2.24.0
+

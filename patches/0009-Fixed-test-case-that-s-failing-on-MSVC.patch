@@ -1,0 +1,26 @@
+From 7c20016d89177b3dcf0751accd27304f90a6be73 Mon Sep 17 00:00:00 2001
+From: Ivan Garramona <heavenandhell171@gmail.com>
+Date: Wed, 13 Jan 2016 16:32:03 -0200
+Subject: [PATCH 9/9] Fixed test case that's failing on MSVC.
+
+---
+ testcases.docopt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/testcases.docopt b/testcases.docopt
+index efe9a07..5faf086 100644
+--- a/testcases.docopt
++++ b/testcases.docopt
+@@ -125,8 +125,7 @@ $ prog -phome
+ 
+ r"""UsAgE: prog [options]
+ 
+-OpTiOnS: --path=<files>  Path to files
+-                [dEfAuLt: /root]
++OpTiOnS: --path=<files>  Path to files [dEfAuLt: /root]
+ 
+ """
+ $ prog
+-- 
+2.24.0
+

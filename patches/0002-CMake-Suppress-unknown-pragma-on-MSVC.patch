@@ -1,0 +1,29 @@
+From 69364d04b739c27e531de3d60d363f6092240581 Mon Sep 17 00:00:00 2001
+From: Ivan Garramona <heavenandhell171@gmail.com>
+Date: Mon, 4 Jan 2016 20:49:11 -0200
+Subject: [PATCH 2/9] [CMake] Suppress "unknown pragma" on MSVC.
+
+---
+ CMakeLists.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 809899b..f2e0935 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,9 +17,11 @@ if(NOT CMAKE_CXX_STANDARD)
+ 	set(CMAKE_CXX_STANDARD 11)
+ endif()
+ 
+-# Suppression of "unknown pragma" warning on GCC
++# Suppression of "unknown pragma" warning on GCC and MSVC
+ if(CMAKE_COMPILER_IS_GNUCXX)
+ 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas")	# Code uses #pragma mark
++elseif(MSVC)
++	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -wd4068")
+ endif()
+ 
+ ########################################################################
+-- 
+2.24.0
+

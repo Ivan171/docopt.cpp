@@ -1,0 +1,33 @@
+From 84a60cfbea639a672ab5a73f1ec47351a430e61d Mon Sep 17 00:00:00 2001
+From: Ivan Garramona <heavenandhell171@gmail.com>
+Date: Thu, 7 Jan 2016 00:03:27 -0200
+Subject: [PATCH 5/9] [CMake] Specify the project language.
+
+This change makes CMake enable only the C++ compiler, which is not what happens
+by default if no language is specified.
+---
+ CMakeLists.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b9d6112..c594816 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,4 +1,5 @@
+ cmake_minimum_required(VERSION 3.1)
++project(docopt.cpp CXX)
+ 
+ option(DOCOPT_WITH_TESTS   "Build tests." OFF)
+ option(DOCOPT_WITH_EXAMPLE "Build example." OFF)
+@@ -8,8 +9,6 @@ if(DOCOPT_WITH_STATIC)
+ 	set(BUILD_SHARED_LIBS OFF)
+ endif()
+ 
+-project(docopt.cpp)
+-
+ ########################################################################
+ # Compiler properties
+ 
+-- 
+2.24.0
+

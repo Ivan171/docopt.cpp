@@ -1,0 +1,79 @@
+From e292ab347059ce3fec39a717347c09ab8e4512ae Mon Sep 17 00:00:00 2001
+From: Ivan Garramona <heavenandhell171@gmail.com>
+Date: Mon, 11 Jan 2016 20:19:53 -0200
+Subject: [PATCH 7/9] Add Windows CI through AppVeyor.
+
+Supported toolchains:
+  MSVC 32/64 bit
+  Mingw-w64 32 bit
+---
+ appveyor.yml | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+ create mode 100644 appveyor.yml
+
+diff --git a/appveyor.yml b/appveyor.yml
+new file mode 100644
+index 0000000..ffd7625
+--- /dev/null
++++ b/appveyor.yml
+@@ -0,0 +1,57 @@
++#---------------------------------#
++#      general configuration      #
++#---------------------------------#
++
++# version format
++version: "{build}"
++
++# Do not build on tags (GitHub only)
++skip_tags: true
++
++#---------------------------------#
++#    environment configuration    #
++#---------------------------------#
++
++# Operating system (build VM template)
++os: Visual Studio 2015
++
++# fetch repository as zip archive
++shallow_clone: true                 # default is "false"
++
++# environment variables
++environment:
++  matrix:
++    - TOOLCHAIN: MSVC32
++      GENERATOR: NMake Makefiles
++      SCRIPT: >-
++        "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
++    - TOOLCHAIN: MSVC64
++      GENERATOR: NMake Makefiles
++      SCRIPT: >-
++        "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
++    - TOOLCHAIN: Mingw32
++      GENERATOR: MinGW Makefiles
++      SCRIPT: set PATH=C:\msys64\mingw32\bin;%PATH:C:\Program Files\Git\usr\bin;=%
++
++#---------------------------------#
++#       build configuration       #
++#---------------------------------#
++
++# scripts to run before build
++before_build:
++  - mkdir build
++  - cd build
++  - call %SCRIPT%
++
++# to run your custom scripts instead of automatic MSBuild
++build_script:
++  - cmake .. -G "%GENERATOR%" -DDOCOPT_WITH_TESTS=TRUE -DDOCOPT_WITH_EXAMPLE=TRUE
++  - cmake --build .
++
++#---------------------------------#
++#       tests configuration       #
++#---------------------------------#
++
++# to run your custom scripts instead of automatic tests
++test_script:
++  - python run_tests
+-- 
+2.24.0
+
